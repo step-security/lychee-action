@@ -2,8 +2,6 @@
 
 # lychee link checking action
 
-[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-lychee-blue.svg?colorA=24292e&colorB=0366d6&style=flat&longCache=true&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAM6wAADOsB5dZE0gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAERSURBVCiRhZG/SsMxFEZPfsVJ61jbxaF0cRQRcRJ9hlYn30IHN/+9iquDCOIsblIrOjqKgy5aKoJQj4O3EEtbPwhJbr6Te28CmdSKeqzeqr0YbfVIrTBKakvtOl5dtTkK+v4HfA9PEyBFCY9AGVgCBLaBp1jPAyfAJ/AAdIEG0dNAiyP7+K1qIfMdonZic6+WJoBJvQlvuwDqcXadUuqPA1NKAlexbRTAIMvMOCjTbMwl1LtI/6KWJ5Q6rT6Ht1MA58AX8Apcqqt5r2qhrgAXQC3CZ6i1+KMd9TRu3MvA3aH/fFPnBodb6oe6HM8+lYHrGdRXW8M9bMZtPXUji69lmf5Cmamq7quNLFZXD9Rq7v0Bpc1o/tp0fisAAAAASUVORK5CYII=)](https://github.com/marketplace/actions/lychee-broken-link-checker)
-[![Check Links](https://github.com/step-security/lychee-action/actions/workflows/links.yml/badge.svg)](https://github.com/step-security/lychee-action/actions/workflows/links.yml)
 
 Quickly check links in Markdown, HTML, and text files using [lychee].
 
@@ -32,7 +30,7 @@ jobs:
     permissions:
       issues: write # required for peter-evans/create-issue-from-file
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Link Checker
         id: lychee
@@ -42,7 +40,7 @@ jobs:
 
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
-        uses: peter-evans/create-issue-from-file@v5
+        uses: step-security/create-issue-from-file@v6
         with:
           title: Link Checker Report
           content-filepath: ./lychee/out.md
@@ -105,7 +103,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
 
 ```yml
 - name: Restore lychee cache
-  uses: actions/cache@v4
+  uses: actions/cache@v6
   with:
     path: .lycheecache
     key: cache-lychee-${{ github.sha }}
@@ -126,7 +124,7 @@ If you need more control over when caches are restored and saved, you can split 
 ```yml
 - name: Restore lychee cache
   id: restore-cache
-  uses: actions/cache/restore@v4
+  uses: actions/cache/restore@v6
   with:
     path: .lycheecache
     key: cache-lychee-${{ github.sha }}
@@ -138,7 +136,7 @@ If you need more control over when caches are restored and saved, you can split 
     args: "--root-dir "$(pwd)" --cache --max-cache-age 1d ."
 
 - name: Save lychee cache
-  uses: actions/cache/save@v4
+  uses: actions/cache/save@v6
   if: always()
   with:
     path: .lycheecache
@@ -161,10 +159,6 @@ repository name and put it into your `README.md`:
 ```
 [![Check Links](https://github.com/org/repo/actions/workflows/links.yml/badge.svg)](https://github.com/org/repo/actions/workflows/links.yml)
 ```
-
-It will look like this:
-
-[![Check Links](https://github.com/step-security/lychee-action/actions/workflows/links.yml/badge.svg)](https://github.com/step-security/lychee-action/actions/workflows/links.yml)
 
 ## Troubleshooting and common problems
 
@@ -218,12 +212,10 @@ This action is based on the deprecated [peter-evans/link-checker] and uses
 
 ## License
 
-lychee is licensed under either of
+lychee is licensed under
 
-- [Apache License, Version 2.0] ([LICENSE-APACHE](./LICENSE-APACHE))
-- [MIT License] ([LICENSE-MIT](./LICENSE-MIT))
+- [MIT License] ([LICENSE-MIT](./LICENSE))
 
-at your option.
 
 [lychee]: https://github.com/lycheeverse/lychee
 [lychee-args]: https://github.com/lycheeverse/lychee#commandline-parameters
@@ -232,6 +224,5 @@ at your option.
 [security]: https://francoisbest.com/posts/2020/the-security-of-github-actions
 [dependabot]: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 [peter-evans/link-checker]: https://github.com/peter-evans/link-checker
-[create issue from file]: https://github.com/peter-evans/create-issue-from-file
-[apache license, version 2.0]: https://www.apache.org/licenses/LICENSE-2.0
+[create issue from file]: https://github.com/step-security/create-issue-from-file
 [mit license]: https://choosealicense.com/licenses/mit
